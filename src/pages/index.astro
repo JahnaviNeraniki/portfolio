@@ -1,0 +1,22 @@
+---
+// P0 placeholder page; replaced by the full home page in Step 3.
+import { profile } from "../data/profile";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{profile.name}</title>
+    <meta name="description" content={profile.headline} />
+  </head>
+  <body>
+    <main>
+      <h1>{profile.name}</h1>
+      <p>{profile.headline}</p>
+      <p>Portfolio under construction.</p>
+    </main>
+  </body>
+</html>

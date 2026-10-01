@@ -1,0 +1,105 @@
+// THE content file. Every name, sentence, date, link, and number on the site comes from here
+// (or from the Markdown in src/content/). Replace every TODO placeholder, then run `npm run todo`.
+
+export type SkillGroup = "AI & LLMs" | "Backend" | "Data" | "DevOps" | "Frontend";
+
+export interface Profile {
+  name: string;
+  /** GitHub username, used in the terminal prompt: handle@portfolio:~$ */
+  handle: string;
+  headline: string;
+  /** 1 sentence */
+  tagline: string;
+  location: string;
+  /** Shown as a status pill */
+  availability: string;
+  email: string;
+  links: {
+    github: string;
+    linkedin: string;
+    resume: string;
+    others?: { label: string; url: string }[];
+  };
+  /** 2–4 short paragraphs */
+  about: string[];
+  /** Path under src/assets/ */
+  photo: string;
+  /** 3–6 items, used by the terminal `fun-fact` command and the About section */
+  funFacts: string[];
+  /** What you're doing now, 2–4 bullets */
+  now: string[];
+  experience: {
+    company: string;
+    title: string;
+    /** "YYYY-MM" */
+    start: string;
+    /** "YYYY-MM" or "Present" */
+    end: string | "Present";
+    location?: string;
+    /** 2–4 bullets, each with a number where possible */
+    bullets: string[];
+    tech: string[];
+  }[];
+  skills: { group: SkillGroup; items: string[] }[];
+  education?: { school: string; degree: string; year: string }[];
+  certifications?: { name: string; year: string; url?: string }[];
+  /** The /uses page */
+  uses: { category: string; items: { name: string; note?: string }[] }[];
+}
+
+export const profile: Profile = {
+  name: "TODO: Full Name",
+  handle: "TODO-username",
+  headline: "AI Engineer | LLM Agents, RAG, Document AI",
+  tagline: "TODO: your one-line tagline, e.g. I build AI systems that check their own work.",
+  location: "Hyderabad, India",
+  availability: "Open to AI Engineer roles",
+  email: "TODO:you@example.com",
+  links: {
+    github: "https://github.com/TODO-username",
+    linkedin: "https://www.linkedin.com/in/TODO-your-profile",
+    resume: "/resume.pdf",
+  },
+  about: [
+    "TODO: About paragraph 1 — who you are and what you build.",
+    "TODO: About paragraph 2 — how you work and what you care about.",
+  ],
+  photo: "/src/assets/photo.jpg",
+  funFacts: ["TODO: fun fact 1", "TODO: fun fact 2", "TODO: fun fact 3"],
+  now: ["TODO: what you're doing now, item 1", "TODO: what you're doing now, item 2"],
+  experience: [
+    {
+      company: "TODO: Company",
+      title: "TODO: Official job title",
+      start: "TODO: YYYY-MM",
+      end: "Present",
+      location: "TODO: City, Country",
+      bullets: [
+        "TODO: achievement with a number, e.g. cut processing time by 40%",
+        "TODO: achievement with a number",
+      ],
+      tech: ["TODO: tech"],
+    },
+  ],
+  // Pre-filled from the DocuMind tech stack. TODO: review and add the rest of your skills.
+  skills: [
+    {
+      group: "AI & LLMs",
+      items: ["LangGraph", "OpenAI", "Anthropic", "MCP", "RAG", "pgvector", "Langfuse"],
+    },
+    { group: "Backend", items: ["Python", "FastAPI", "Pydantic", "SQLAlchemy", "Redis"] },
+    { group: "Data", items: ["PostgreSQL", "Tesseract", "Docling"] },
+    { group: "DevOps", items: ["Docker", "GitHub Actions", "Prometheus", "Grafana"] },
+    { group: "Frontend", items: ["React", "TypeScript", "Tailwind CSS", "Vite"] },
+  ],
+  uses: [
+    {
+      category: "TODO: Hardware",
+      items: [{ name: "TODO: laptop", note: "TODO: short note" }],
+    },
+    {
+      category: "TODO: Editor & terminal",
+      items: [{ name: "TODO: editor", note: "TODO: short note" }],
+    },
+  ],
+};

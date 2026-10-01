@@ -1,0 +1,17 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# test output
+test-results/
+playwright-report/
+.lighthouseci/
+
+# environment and OS files
+.env
+.env.*
+.DS_Store
+Thumbs.db
