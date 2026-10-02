@@ -3,9 +3,9 @@ import { profile, type SkillGroup } from "../data/profile";
 
 export type Project = CollectionEntry<"projects">;
 
-/** All projects, sorted by `order`. */
+/** Published (non-draft) projects, sorted by `order`. */
 export async function getProjects(): Promise<Project[]> {
-  const projects = await getCollection("projects");
+  const projects = await getCollection("projects", (project) => !project.data.draft);
   return projects.sort((a, b) => a.data.order - b.data.order);
 }
 

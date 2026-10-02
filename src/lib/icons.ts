@@ -9,6 +9,12 @@ export interface BrandIcon {
 // Names in profile.ts that differ from the Simple Icons title.
 const ALIASES: Record<string, string> = {
   mcp: "model context protocol",
+  kafka: "apache kafka",
+  jwt: "json web tokens",
+  "material ui": "mui",
+  java: "openjdk",
+  "spring ai": "spring",
+  "spring data jpa": "spring",
 };
 
 const byTitle = new Map<string, BrandIcon>();

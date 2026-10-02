@@ -11,6 +11,8 @@ const projects = defineCollection({
       role: z.string(),
       year: z.number().int(),
       featured: z.boolean().default(false),
+      /** true = hidden everywhere on the site until the project is ready */
+      draft: z.boolean().default(false),
       order: z.number().int(),
       status: z.enum(["Completed", "In progress"]),
       repo: z.string().optional(),

@@ -6,9 +6,9 @@ import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import { todoWarnings } from "./scripts/todo.mjs";
 
-// TODO: replace TODO-username with your GitHub username (the repo must be named <username>.github.io).
+// Your GitHub Pages URL. The repo must be named JahnaviNeraniki.github.io.
 // No `base` is set: a user-site repo is served from the root URL.
-const SITE = "https://TODO-username.github.io";
+const SITE = "https://jahnavineraniki.github.io";
 
 export default defineConfig({
   site: SITE,

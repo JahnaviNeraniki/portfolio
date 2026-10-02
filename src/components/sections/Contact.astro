@@ -55,6 +55,11 @@ const mailto = `mailto:${profile.email}`;
             GitHub
           </Button>
         </li>
+        {(profile.links.others ?? []).map((link) => (
+          <li>
+            <Button href={link.url}>{link.label}</Button>
+          </li>
+        ))}
       </ul>
     </div>
 

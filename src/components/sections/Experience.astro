@@ -1,4 +1,5 @@
 ---
+import Card from "../ui/Card.astro";
 import SectionHeading from "../ui/SectionHeading.astro";
 import Tag from "../ui/Tag.astro";
 import { copy, profile } from "../../data/profile";
@@ -9,6 +10,7 @@ interface Props {
 }
 
 const { index } = Astro.props;
+const { education = [], certifications = [] } = profile;
 ---
 
 <section id="experience" class="section container-page reveal" aria-labelledby="experience-title">
@@ -43,6 +45,46 @@ const { index } = Astro.props;
       ))}
     </ol>
   </div>
+
+  {(education.length > 0 || certifications.length > 0) && (
+    <div class="mt-12 grid gap-4 md:grid-cols-2">
+      {education.length > 0 && (
+        <Card class="p-5">
+          <h3 class="text-mono font-semibold text-accent">{copy.experience.education}</h3>
+          <ul class="mt-4 flex flex-col gap-4">
+            {education.map((entry) => (
+              <li>
+                <p class="font-semibold">{entry.degree}</p>
+                <p class="text-muted">{entry.school}</p>
+                <p class="text-mono text-muted">{entry.year}</p>
+              </li>
+            ))}
+          </ul>
+        </Card>
+      )}
+      {certifications.length > 0 && (
+        <Card class="p-5">
+          <h3 class="text-mono font-semibold text-accent">{copy.experience.certifications}</h3>
+          <ul class="mt-4 flex flex-col gap-4">
+            {certifications.map((cert) => (
+              <li>
+                <p class="font-semibold">
+                  {cert.url ? (
+                    <a href={cert.url} rel="noopener">
+                      {cert.name}
+                    </a>
+                  ) : (
+                    cert.name
+                  )}
+                </p>
+                <p class="text-mono text-muted">{cert.year}</p>
+              </li>
+            ))}
+          </ul>
+        </Card>
+      )}
+    </div>
+  )}
 </section>
 
 <style>
