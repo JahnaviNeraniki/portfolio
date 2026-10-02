@@ -11,16 +11,15 @@ import type { Project } from "../../lib/projects";
 import { withBase } from "../../lib/url";
 
 interface Props {
-  index: number;
   project: Project;
 }
 
-const { index, project } = Astro.props;
+const { project } = Astro.props;
 const { title, summary, video, poster, metrics, tech, repo } = project.data;
 ---
 
 <section id="featured" class="section container-page reveal" aria-labelledby="featured-title">
-  <SectionHeading index={index} id="featured" title={copy.sections.featured} />
+  <SectionHeading id="featured" title={copy.sections.featured} />
 
   <article class="card mt-10 p-5 md:p-8">
     <h3 class="text-3xl md:text-4xl">{title}</h3>

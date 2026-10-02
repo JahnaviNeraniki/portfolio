@@ -1,0 +1,128 @@
+---
+import { Clapperboard, Dumbbell, Feather, Headphones, Plane } from "lucide-react";
+import SectionHeading from "../ui/SectionHeading.astro";
+import { copy, profile, type HobbyIcon } from "../../data/profile";
+
+const ICONS: Record<HobbyIcon, typeof Plane> = {
+  dumbbell: Dumbbell,
+  shuttlecock: Feather,
+  headphones: Headphones,
+  clapperboard: Clapperboard,
+  plane: Plane,
+};
+---
+
+<section id="hobbies" class="section container-page reveal" aria-labelledby="hobbies-title">
+  <SectionHeading id="hobbies" title={copy.sections.hobbies} />
+  <p class="mt-3 text-muted">{copy.hobbies.intro}</p>
+
+  <ul class="hobbies mt-10">
+    {profile.hobbies.map((hobby, i) => {
+      const Icon = ICONS[hobby.icon];
+      return (
+        <li class:list={["hobby", i === 0 && "hobby-wide"]} style={`--h: ${hobby.color}`}>
+          <span class="medal" aria-hidden="true">
+            <Icon size={24} />
+          </span>
+          <h3>{hobby.title}</h3>
+          <p class="text-muted">{hobby.text}</p>
+          {hobby.tags && (
+            <ul class="flex flex-wrap gap-2" aria-label={`${hobby.title} tags`}>
+              {hobby.tags.map((tag) => (
+                <li class="tag">{tag}</li>
+              ))}
+            </ul>
+          )}
+        </li>
+      );
+    })}
+  </ul>
+</section>
+
+<style>
+  /* Bento grid: the first card spans 2 columns, so 5 cards fill 2 rows of 3 (3 rows of 2 on phones) */
+  .hobbies {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  @media (min-width: 768px) {
+    .hobbies {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .hobby {
+    /* Hobby colour, nudged towards the text colour so it reads on both the night and day themes */
+    --tone: color-mix(in oklab, var(--h) 78%, var(--text));
+    position: relative;
+    display: grid;
+    align-content: start;
+    gap: 10px;
+    min-width: 0;
+    padding: 22px;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background:
+      radial-gradient(
+        120% 90% at 100% 0%,
+        color-mix(in srgb, var(--h) 16%, transparent),
+        transparent 60%
+      ),
+      var(--card);
+    overflow: hidden;
+    transition:
+      transform 200ms ease-out,
+      border-color 200ms ease-out,
+      box-shadow 200ms ease-out;
+  }
+  .hobby-wide {
+    grid-column: span 2;
+  }
+  .hobby h3 {
+    margin-top: 4px;
+  }
+  .hobby p {
+    margin: 0;
+  }
+
+  .medal {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    color: var(--tone);
+    background: color-mix(in srgb, var(--h) 16%, transparent);
+    border: 1px solid color-mix(in srgb, var(--h) 40%, transparent);
+    transition: transform 300ms ease-out;
+  }
+
+  /* A small "orbit" ring drawn around the icon on hover, in keeping with the space theme */
+  .medal::after {
+    content: "";
+    position: absolute;
+    inset: -10px;
+    border-radius: 50%;
+    border: 1px dashed color-mix(in srgb, var(--h) 55%, transparent);
+    opacity: 0;
+    transform: scale(0.7);
+    transition:
+      opacity 300ms ease-out,
+      transform 300ms ease-out;
+  }
+
+  .hobby:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--h) 60%, var(--border));
+    box-shadow: 0 18px 40px -22px var(--h);
+  }
+  .hobby:hover .medal {
+    transform: rotate(-8deg) scale(1.06);
+  }
+  .hobby:hover .medal::after {
+    opacity: 1;
+    transform: scale(1) rotate(45deg);
+  }
+</style>

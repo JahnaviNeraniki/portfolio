@@ -3,6 +3,9 @@
 
 import { withBase } from "../lib/url";
 
+/** Icons available for hobby cards (drawn by src/components/sections/Hobbies.astro). */
+export type HobbyIcon = "dumbbell" | "shuttlecock" | "headphones" | "clapperboard" | "plane";
+
 export type SkillGroup = "AI & LLMs" | "Backend" | "Data" | "DevOps" | "Frontend";
 
 export interface Profile {
@@ -26,8 +29,11 @@ export interface Profile {
   about: string[];
   /** Path under src/assets/ */
   photo: string;
-  /** 3–6 items, used by the terminal `fun-fact` command and the About section */
-  funFacts: string[];
+  /**
+   * 3–6 hobbies, shown as cards in the "Off the clock" section and used by the terminal
+   * `fun-fact` command. The first card is shown wide. `color` is any CSS colour.
+   */
+  hobbies: { title: string; text: string; icon: HobbyIcon; color: string; tags?: string[] }[];
   /** What you're doing now, 2–4 bullets */
   now: string[];
   experience: {
@@ -70,12 +76,23 @@ export const profile: Profile = {
     "I studied Computer Science and Engineering at Sree Vidyanikethan Engineering College, graduating in 2024 with a 9.33 CGPA.",
   ],
   photo: "/src/assets/photo.jpg",
-  funFacts: [
-    "I'm into fitness, and dancing is my favourite way to stay active",
-    "Badminton is my go-to sport",
-    "I love listening to music",
-    "I watch a lot of movies",
-    "I've recently started travelling and would love to experience new places",
+  hobbies: [
+    {
+      title: "Dance & fitness",
+      text: "I'm into fitness, and dancing is my favourite way to stay active.",
+      icon: "dumbbell",
+      color: "#ec4899",
+      tags: ["dance", "workouts"],
+    },
+    { title: "Badminton", text: "My go-to sport.", icon: "shuttlecock", color: "#10b981" },
+    { title: "Music", text: "I love listening to music.", icon: "headphones", color: "#8b5cf6" },
+    { title: "Movies", text: "I watch a lot of movies.", icon: "clapperboard", color: "#f59e0b" },
+    {
+      title: "Travel",
+      text: "Recently started travelling and would love to experience new places.",
+      icon: "plane",
+      color: "#0ea5e9",
+    },
   ],
   now: [
     "Expanding into DevOps with Docker, Kubernetes and CI/CD workflows",
@@ -187,7 +204,11 @@ export const copy = {
     experience: "Experience",
     skills: "Skills",
     writing: "Writing",
+    hobbies: "Off the clock",
     contact: "Contact",
+  },
+  hobbies: {
+    intro: "What I do when I'm not shipping code.",
   },
   hero: {
     view: "View",
@@ -198,7 +219,6 @@ export const copy = {
   },
   about: {
     now: "Now",
-    funFact: "Fun fact",
   },
   experience: {
     education: "Education",

@@ -288,9 +288,10 @@ export const commands: Command[] = [
     aliases: ["funfact"],
     description: "A random fun fact",
     run: (_, { profile, random }) => {
-      if (profile.funFacts.length === 0) return text("Fun facts coming soon.");
-      const index = Math.floor(random() * profile.funFacts.length) % profile.funFacts.length;
-      return text(`✨ ${profile.funFacts[index]}`);
+      const facts = profile.hobbies.map((hobby) => hobby.text);
+      if (facts.length === 0) return text("Fun facts coming soon.");
+      const index = Math.floor(random() * facts.length) % facts.length;
+      return text(`✨ ${facts[index]}`);
     },
   },
   {

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Monitor, Moon, Sun } from "lucide-react";
 import {
+  DEFAULT_THEME,
   THEME_CHANGE_EVENT,
   getThemePref,
   isThemePref,
@@ -17,9 +18,9 @@ const LABELS: Record<ThemePref, string> = {
   matrix: "matrix",
 };
 
-/** Cycles system → light → dark. Which icon shows is driven by CSS (data-theme-pref on <html>). */
+/** Cycles dark → light → system. Which icon shows is driven by CSS (data-theme-pref on <html>). */
 export default function ThemeToggle() {
-  const [pref, setPref] = useState<ThemePref>("system");
+  const [pref, setPref] = useState<ThemePref>(DEFAULT_THEME);
 
   useEffect(() => {
     setPref(getThemePref());

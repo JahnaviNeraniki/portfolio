@@ -5,16 +5,11 @@ import Tag from "../ui/Tag.astro";
 import { copy, profile } from "../../data/profile";
 import { formatMonth } from "../../lib/format";
 
-interface Props {
-  index: number;
-}
-
-const { index } = Astro.props;
 const { education = [], certifications = [] } = profile;
 ---
 
 <section id="experience" class="section container-page reveal" aria-labelledby="experience-title">
-  <SectionHeading index={index} id="experience" title={copy.sections.experience} />
+  <SectionHeading id="experience" title={copy.sections.experience} />
 
   <div class="timeline relative mt-10">
     <span class="timeline-line" aria-hidden="true"></span>

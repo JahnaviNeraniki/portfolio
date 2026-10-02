@@ -6,16 +6,15 @@ import { copy } from "../../data/profile";
 import { withBase } from "../../lib/url";
 
 interface Props {
-  index: number;
   /** Published posts, newest first */
   posts: CollectionEntry<"posts">[];
 }
 
-const { index, posts } = Astro.props;
+const { posts } = Astro.props;
 ---
 
 <section id="writing" class="section container-page reveal" aria-labelledby="writing-title">
-  <SectionHeading index={index} id="writing" title={copy.sections.writing} />
+  <SectionHeading id="writing" title={copy.sections.writing} />
 
   <ul class="mt-10 flex flex-col gap-4">
     {posts.map((post) => (

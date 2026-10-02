@@ -28,7 +28,12 @@ const profile: Profile = {
   },
   about: ["First paragraph.", "Second paragraph."],
   photo: "/src/assets/photo.jpg",
-  funFacts: ["Fact A", "Fact B", "Fact C"],
+  hobbies: ["Fact A", "Fact B", "Fact C"].map((text) => ({
+    title: text,
+    text,
+    icon: "plane" as const,
+    color: "#000",
+  })),
   now: ["Learning Kubernetes", "Building agents"],
   experience: [
     {

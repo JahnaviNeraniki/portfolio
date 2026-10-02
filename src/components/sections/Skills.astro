@@ -3,16 +3,10 @@ import Card from "../ui/Card.astro";
 import SectionHeading from "../ui/SectionHeading.astro";
 import Tag from "../ui/Tag.astro";
 import { copy, profile } from "../../data/profile";
-
-interface Props {
-  index: number;
-}
-
-const { index } = Astro.props;
 ---
 
 <section id="skills" class="section container-page reveal" aria-labelledby="skills-title">
-  <SectionHeading index={index} id="skills" title={copy.sections.skills} />
+  <SectionHeading id="skills" title={copy.sections.skills} />
 
   <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
     {profile.skills.map((skill) => (

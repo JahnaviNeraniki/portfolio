@@ -18,6 +18,7 @@ export async function getHomeSections(): Promise<HomeSection[]> {
     "experience",
     "skills",
     ...(posts.length > 0 ? (["writing"] as const) : []),
+    "hobbies",
     "contact",
   ];
   return ids.map((id) => ({ id, label: copy.sections[id] }));

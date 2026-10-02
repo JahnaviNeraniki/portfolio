@@ -7,17 +7,12 @@ import SectionHeading from "../ui/SectionHeading.astro";
 import { copy, profile } from "../../data/profile";
 import { site } from "../../data/site";
 
-interface Props {
-  index: number;
-}
-
-const { index } = Astro.props;
 const formAction = site.formspreeId ? `https://formspree.io/f/${site.formspreeId}` : undefined;
 const mailto = `mailto:${profile.email}`;
 ---
 
 <section id="contact" class="section container-page reveal" aria-labelledby="contact-title">
-  <SectionHeading index={index} id="contact" title={copy.sections.contact} />
+  <SectionHeading id="contact" title={copy.sections.contact} />
 
   <div class="mt-10 grid gap-10 md:grid-cols-2">
     <div class="flex flex-col gap-6">

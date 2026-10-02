@@ -6,6 +6,8 @@ export type ThemePref = (typeof THEME_PREFS)[number];
 export type ResolvedTheme = "light" | "dark" | "matrix";
 
 export const THEME_STORAGE_KEY = "theme";
+/** The space (dark) look is the default until the visitor picks another theme. */
+export const DEFAULT_THEME: ThemePref = "dark";
 export const THEME_CHANGE_EVENT = "portfolio:theme-change";
 
 const darkQuery = () => window.matchMedia("(prefers-color-scheme: dark)");
@@ -19,19 +21,19 @@ export function resolveTheme(pref: ThemePref, systemDark: boolean): ResolvedThem
   return pref;
 }
 
-/** The toggle button cycles system → light → dark → system (matrix exits to system). */
+/** The toggle cycles dark (space, the default) → light → system → dark; matrix exits to dark. */
 export function nextThemePref(pref: ThemePref): ThemePref {
-  if (pref === "system") return "light";
-  if (pref === "light") return "dark";
-  return "system";
+  if (pref === "dark") return "light";
+  if (pref === "light") return "system";
+  return "dark";
 }
 
 export function getThemePref(): ThemePref {
   try {
     const stored = localStorage.getItem(THEME_STORAGE_KEY);
-    return isThemePref(stored) ? stored : "system";
+    return isThemePref(stored) ? stored : DEFAULT_THEME;
   } catch {
-    return "system";
+    return DEFAULT_THEME;
   }
 }
 

@@ -2,19 +2,19 @@
 
 /* ---------- Fonts: self-hosted, Latin subset only ---------- */
 @font-face {
-  font-family: "Inter Variable";
+  font-family: "DM Sans Variable";
   font-style: normal;
   font-display: swap;
-  font-weight: 100 900;
-  src: url("../../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2")
+  font-weight: 100 1000;
+  src: url("../../node_modules/@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2")
     format("woff2-variations");
 }
 @font-face {
-  font-family: "Inter Tight Variable";
+  font-family: "Sora Variable";
   font-style: normal;
   font-display: swap;
-  font-weight: 100 900;
-  src: url("../../node_modules/@fontsource-variable/inter-tight/files/inter-tight-latin-wght-normal.woff2")
+  font-weight: 100 800;
+  src: url("../../node_modules/@fontsource-variable/sora/files/sora-latin-wght-normal.woff2")
     format("woff2-variations");
 }
 @font-face {
@@ -26,55 +26,75 @@
     format("woff2-variations");
 }
 
-/* ---------- Colour tokens (spec 8.1) ---------- */
+/* ---------- Colour tokens: Space / Astronaut theme ---------- */
+/* Light ("daylight"): lavender-white sky, violet + sky-blue accents */
 :root,
 [data-theme="light"] {
-  --bg: #fafaf9;
+  --bg: #f7f5ff;
   --surface: #ffffff;
-  --border: #e7e5e4;
-  --text: #1c1917;
-  --muted: #57534e;
-  --accent: #4f46e5;
-  --accent-2: #059669;
+  --border: #e4defa;
+  --text: #1a1538;
+  --muted: #5b5677;
+  --accent: #6d28d9;
+  --accent-2: #0369a1;
   --warn: #b45309;
   /* Text on accent-filled buttons */
   --accent-contrast: #ffffff;
+  /* Soft glow painted behind the page */
+  --sky:
+    radial-gradient(60% 40% at 90% 0%, rgb(167 139 250 / 0.18), transparent 70%),
+    radial-gradient(50% 35% at 0% 30%, rgb(56 189 248 / 0.12), transparent 70%);
+  --card: linear-gradient(160deg, rgb(167 139 250 / 0.07), rgb(56 189 248 / 0.03)), var(--surface);
+  --star: #6d28d9;
 }
 
+/* Dark (default): deep navy night sky with a violet nebula */
 [data-theme="dark"],
 [data-theme="matrix"] {
-  --bg: #0b0d10;
-  --surface: #14171c;
-  --border: #262a31;
-  --text: #e8eaed;
-  --muted: #9aa0a6;
-  --accent: #8b8cff;
-  --accent-2: #34d399;
+  --bg: #070b1e;
+  --surface: #0f1430;
+  --border: #262b52;
+  --text: #f5f3ff;
+  --muted: #a9a6c9;
+  --accent: #a78bfa;
+  --accent-2: #38bdf8;
   --warn: #fbbf24;
-  --accent-contrast: #0b0d10;
+  --accent-contrast: #0b0822;
+  --sky:
+    radial-gradient(60% 45% at 85% 0%, rgb(139 92 246 / 0.28), transparent 70%),
+    radial-gradient(50% 40% at 0% 35%, rgb(56 189 248 / 0.14), transparent 70%);
+  --card: linear-gradient(160deg, rgb(139 92 246 / 0.12), rgb(56 189 248 / 0.04)), var(--surface);
+  --star: #f5f3ff;
 }
 
 /* Easter-egg theme: green on black */
 [data-theme="matrix"] {
   --bg: #000000;
+  --surface: #050805;
   --text: #00ff66;
   --accent: #00ff66;
   --accent-contrast: #000000;
+  --sky: none;
+  --card: var(--surface);
+  --star: #00ff66;
 }
 
-/* No JavaScript: follow the OS setting */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) {
-    --bg: #0b0d10;
-    --surface: #14171c;
-    --border: #262a31;
-    --text: #e8eaed;
-    --muted: #9aa0a6;
-    --accent: #8b8cff;
-    --accent-2: #34d399;
-    --warn: #fbbf24;
-    --accent-contrast: #0b0d10;
-  }
+/* No JavaScript: the space (dark) look is the default */
+:root:not([data-theme]) {
+  --bg: #070b1e;
+  --surface: #0f1430;
+  --border: #262b52;
+  --text: #f5f3ff;
+  --muted: #a9a6c9;
+  --accent: #a78bfa;
+  --accent-2: #38bdf8;
+  --warn: #fbbf24;
+  --accent-contrast: #0b0822;
+  --sky:
+    radial-gradient(60% 45% at 85% 0%, rgb(139 92 246 / 0.28), transparent 70%),
+    radial-gradient(50% 40% at 0% 35%, rgb(56 189 248 / 0.14), transparent 70%);
+  --card: linear-gradient(160deg, rgb(139 92 246 / 0.12), rgb(56 189 248 / 0.04)), var(--surface);
+  --star: #f5f3ff;
 }
 
 /* Expose tokens to Tailwind utilities: bg-bg, text-muted, border-border, ... */
@@ -88,8 +108,8 @@
   --color-accent-2: var(--accent-2);
   --color-warn: var(--warn);
   --color-accent-contrast: var(--accent-contrast);
-  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Inter Tight Variable", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "DM Sans Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Sora Variable", "DM Sans Variable", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, "Cascadia Code", Consolas, monospace;
 }
 
@@ -112,6 +132,9 @@
     display: flex;
     flex-direction: column;
     -webkit-font-smoothing: antialiased;
+    /* Nebula glow at the top of every page */
+    background-image: var(--sky);
+    background-repeat: no-repeat;
   }
 
   main {
@@ -213,19 +236,11 @@
     }
   }
 
-  /* Small mono label above section headings: // 02. projects */
-  .section-label {
-    font-family: var(--font-mono);
-    font-size: 0.8125rem;
-    color: var(--accent);
-    margin-bottom: 8px;
-  }
-
-  /* Cards: 12px radius, 1px border, hover lifts 2px with a soft accent glow */
+  /* Cards: 18px radius, 1px border, faint violet tint; hover lifts 2px with an accent glow */
   .card {
-    background: var(--surface);
+    background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 18px;
     transition:
       transform 150ms ease-out,
       border-color 150ms ease-out,
@@ -235,7 +250,7 @@
   .card-hover:focus-within {
     transform: translateY(-2px);
     border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
-    box-shadow: 0 8px 24px -12px color-mix(in srgb, var(--accent) 45%, transparent);
+    box-shadow: 0 14px 36px -18px var(--accent);
   }
 
   .btn {
@@ -244,7 +259,7 @@
     gap: 8px;
     min-height: 44px;
     padding: 8px 16px;
-    border-radius: 8px;
+    border-radius: 12px;
     border: 1px solid var(--border);
     background: var(--surface);
     color: var(--text);
@@ -470,13 +485,13 @@ dialog::backdrop {
 
 /* ---------- Terminal: always dark like a real terminal (matrix keeps its green) ---------- */
 .terminal {
-  --bg: #0b0d10;
-  --surface: #14171c;
-  --border: #262a31;
-  --text: #e8eaed;
-  --muted: #9aa0a6;
-  --accent: #8b8cff;
-  --accent-2: #34d399;
+  --bg: #070b1e;
+  --surface: #0f1430;
+  --border: #262b52;
+  --text: #f5f3ff;
+  --muted: #a9a6c9;
+  --accent: #a78bfa;
+  --accent-2: #38bdf8;
   --warn: #fbbf24;
 }
 [data-theme="matrix"] .terminal {
@@ -492,8 +507,8 @@ dialog::backdrop {
   max-height: none;
   margin: auto;
   padding: 0;
-  border: 1px solid #262a31;
-  border-radius: 12px;
+  border: 1px solid #262b52;
+  border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 24px 64px -16px rgb(0 0 0 / 0.6);
 }

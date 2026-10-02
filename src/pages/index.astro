@@ -8,10 +8,10 @@ import Projects from "../components/sections/Projects.astro";
 import Experience from "../components/sections/Experience.astro";
 import Skills from "../components/sections/Skills.astro";
 import Writing from "../components/sections/Writing.astro";
+import Hobbies from "../components/sections/Hobbies.astro";
 import Contact from "../components/sections/Contact.astro";
 import { profile } from "../data/profile";
 import { getProjects } from "../lib/projects";
-import { getHomeSections, type HomeSection } from "../lib/sections";
 import { withBase } from "../lib/url";
 
 const projects = await getProjects();
@@ -21,10 +21,6 @@ const others = projects.filter((project) => project !== featured);
 const posts = (await getCollection("posts", (post) => !post.data.draft)).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime(),
 );
-
-// Section numbers for the "// 01. about" labels, skipping sections that are not shown.
-const sections = await getHomeSections();
-const n = (id: HomeSection["id"]) => sections.findIndex((section) => section.id === id) + 1;
 
 // Structured data for search engines (schema.org Person).
 const person = {
@@ -52,11 +48,12 @@ const person = {
 <BaseLayout title={`${profile.name} · ${profile.headline}`} description={profile.tagline}>
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(person)} />
   <Hero featuredTitle={featured?.data.title} />
-  <About index={n("about")} />
-  {featured && <FeaturedProject index={n("featured")} project={featured} />}
-  <Projects index={n("projects")} projects={others} />
-  <Experience index={n("experience")} />
-  <Skills index={n("skills")} />
-  {posts.length > 0 && <Writing index={n("writing")} posts={posts} />}
-  <Contact index={n("contact")} />
+  <About />
+  {featured && <FeaturedProject project={featured} />}
+  <Projects projects={others} />
+  <Experience />
+  <Skills />
+  {posts.length > 0 && <Writing posts={posts} />}
+  <Hobbies />
+  <Contact />
 </BaseLayout>

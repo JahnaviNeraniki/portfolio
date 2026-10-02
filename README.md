@@ -29,15 +29,15 @@ npm run dev       # http://localhost:4321
 
 You never need to touch a component to change the site's text.
 
-| What                                                                   | Where                                        |
-| ---------------------------------------------------------------------- | -------------------------------------------- |
-| Name, headline, about, experience, skills, education, links, fun facts | `src/data/profile.ts` (the `profile` object) |
-| Button labels, section titles, short lines                             | `src/data/profile.ts` (the `copy` object)    |
-| Photo                                                                  | `src/assets/photo.jpg` (square, 800 px+)     |
-| Resume                                                                 | `public/resume.pdf`                          |
-| Projects / case studies                                                | `src/content/projects/*.mdx`                 |
-| Blog posts (optional)                                                  | `src/content/posts/*.md`                     |
-| Contact form and analytics                                             | `src/data/site.ts`                           |
+| What                                                                 | Where                                        |
+| -------------------------------------------------------------------- | -------------------------------------------- |
+| Name, headline, about, experience, skills, education, links, hobbies | `src/data/profile.ts` (the `profile` object) |
+| Button labels, section titles, short lines                           | `src/data/profile.ts` (the `copy` object)    |
+| Photo                                                                | `src/assets/photo.jpg` (square, 800 px+)     |
+| Resume                                                               | `public/resume.pdf`                          |
+| Projects / case studies                                              | `src/content/projects/*.mdx`                 |
+| Blog posts (optional)                                                | `src/content/posts/*.md`                     |
+| Contact form and analytics                                           | `src/data/site.ts`                           |
 
 ### Publish DocuMind when it's ready
 

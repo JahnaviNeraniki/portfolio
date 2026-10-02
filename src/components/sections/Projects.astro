@@ -10,17 +10,16 @@ import { PROJECT_FILTERS, filterSlug, projectFilters, type Project } from "../..
 import { withBase } from "../../lib/url";
 
 interface Props {
-  index: number;
   /** Non-featured projects, already sorted by order */
   projects: Project[];
 }
 
-const { index, projects } = Astro.props;
+const { projects } = Astro.props;
 const showGrid = projects.length >= 2;
 ---
 
 <section id="projects" class="section container-page reveal" aria-labelledby="projects-title">
-  <SectionHeading index={index} id="projects" title={copy.sections.projects} />
+  <SectionHeading id="projects" title={copy.sections.projects} />
 
   {showGrid ? (
     <>

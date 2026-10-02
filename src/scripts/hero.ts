@@ -1,4 +1,4 @@
-// Hero enhancements: the typed headline and the dot-grid background.
+// Hero enhancements: the typed headline and the star-field background.
 import { THEME_CHANGE_EVENT } from "../lib/theme";
 
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -21,8 +21,8 @@ if (typed && !reducedMotion) {
   }, step);
 }
 
-// ---------- Dot grid that bends slightly toward the cursor ----------
-const canvas = document.querySelector<HTMLCanvasElement>(".dot-grid");
+// ---------- Star field: twinkles gently and drifts a little with the cursor ----------
+const canvas = document.querySelector<HTMLCanvasElement>(".star-field");
 const context = canvas?.getContext("2d");
 
 interface NavigatorHints {
@@ -39,26 +39,32 @@ function isLowPower(): boolean {
   );
 }
 
+interface Star {
+  x: number;
+  y: number;
+  r: number;
+  phase: number;
+}
+
 if (canvas && context) {
-  const GAP = 28; // px between dots
-  const RADIUS = 1.2; // dot radius
-  const REACH = 140; // px around the cursor that bends
-  const PULL = 10; // max px a dot moves
+  const DENSITY = 2600; // px² of sky per star
+  const DRIFT = 14; // max px the nearest stars move with the cursor
   const FRAME_MS = 1000 / 60; // max 60 fps
   const animate = !reducedMotion && !isLowPower();
 
   let width = 0;
   let height = 0;
-  let color = "#888";
-  let pointer: { x: number; y: number } | null = null;
+  let color = "#f5f3ff";
+  let stars: Star[] = [];
+  let target = { x: 0, y: 0 }; // cursor offset from the centre, -1..1
+  let drift = { x: 0, y: 0 }; // eased towards target
   let visible = true;
   let frame = 0;
   let lastFrame = 0;
-  // Current displacement of each dot, eased toward its target every frame.
-  let offsets = new Float32Array(0);
 
-  const columns = () => Math.ceil(width / GAP) + 1;
-  const rows = () => Math.ceil(height / GAP) + 1;
+  function readColor() {
+    color = getComputedStyle(document.documentElement).getPropertyValue("--star").trim() || color;
+  }
 
   function resize() {
     if (!canvas || !context) return;
@@ -68,63 +74,49 @@ if (canvas && context) {
     canvas.width = Math.round(width * ratio);
     canvas.height = Math.round(height * ratio);
     context.setTransform(ratio, 0, 0, ratio, 0, 0);
-    offsets = new Float32Array(columns() * rows() * 2);
+    stars = Array.from({ length: Math.round((width * height) / DENSITY) }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      r: Math.random() * 1.3 + 0.25,
+      phase: Math.random() * Math.PI * 2,
+    }));
     readColor();
-    draw();
+    draw(0);
   }
 
-  function readColor() {
-    color = getComputedStyle(document.documentElement).getPropertyValue("--muted").trim() || color;
-  }
-
-  /** Draws one frame; returns true while dots are still moving. */
-  function draw(): boolean {
-    if (!context) return false;
+  function draw(time: number) {
+    if (!context) return;
     context.clearRect(0, 0, width, height);
     context.fillStyle = color;
-    context.globalAlpha = 0.45;
-    let moving = false;
-    const cols = columns();
-    for (let row = 0; row < rows(); row += 1) {
-      for (let col = 0; col < cols; col += 1) {
-        const x = col * GAP;
-        const y = row * GAP;
-        const i = (row * cols + col) * 2;
-        let targetX = 0;
-        let targetY = 0;
-        if (pointer) {
-          const dx = pointer.x - x;
-          const dy = pointer.y - y;
-          const distance = Math.hypot(dx, dy);
-          if (distance < REACH && distance > 0) {
-            const strength = (1 - distance / REACH) * PULL;
-            targetX = (dx / distance) * strength;
-            targetY = (dy / distance) * strength;
-          }
-        }
-        const ox = (offsets[i] ?? 0) + (targetX - (offsets[i] ?? 0)) * 0.15;
-        const oy = (offsets[i + 1] ?? 0) + (targetY - (offsets[i + 1] ?? 0)) * 0.15;
-        offsets[i] = ox;
-        offsets[i + 1] = oy;
-        if (Math.abs(targetX - ox) > 0.05 || Math.abs(targetY - oy) > 0.05) moving = true;
-        context.beginPath();
-        context.arc(x + ox, y + oy, RADIUS, 0, Math.PI * 2);
-        context.fill();
-      }
+    for (const star of stars) {
+      // Bigger (nearer) stars twinkle more and drift further: a light parallax.
+      const twinkle = animate ? (Math.sin(time / 900 + star.phase) + 1) / 2 : 0.6;
+      context.globalAlpha = 0.25 + 0.6 * twinkle * (star.r / 1.55);
+      const depth = star.r / 1.55;
+      context.beginPath();
+      context.arc(
+        star.x - drift.x * DRIFT * depth,
+        star.y - drift.y * DRIFT * depth,
+        star.r,
+        0,
+        Math.PI * 2,
+      );
+      context.fill();
     }
-    return moving;
   }
 
   function loop(time: number) {
     frame = 0;
     if (!visible || document.hidden) return;
-    if (time - lastFrame < FRAME_MS) {
-      frame = requestAnimationFrame(loop);
-      return;
+    if (time - lastFrame >= FRAME_MS) {
+      lastFrame = time;
+      drift = {
+        x: drift.x + (target.x - drift.x) * 0.06,
+        y: drift.y + (target.y - drift.y) * 0.06,
+      };
+      draw(time);
     }
-    lastFrame = time;
-    // Keep animating only while the dots are still settling.
-    if (draw()) frame = requestAnimationFrame(loop);
+    frame = requestAnimationFrame(loop);
   }
 
   function start() {
@@ -135,24 +127,25 @@ if (canvas && context) {
   new ResizeObserver(resize).observe(canvas);
   window.addEventListener(THEME_CHANGE_EVENT, () => {
     readColor();
-    draw();
+    draw(performance.now());
   });
 
   if (animate) {
     const hero = canvas.parentElement ?? canvas;
     hero.addEventListener("pointermove", (event) => {
       const rect = canvas.getBoundingClientRect();
-      pointer = { x: event.clientX - rect.left, y: event.clientY - rect.top };
-      start();
+      target = {
+        x: ((event.clientX - rect.left) / rect.width) * 2 - 1,
+        y: ((event.clientY - rect.top) / rect.height) * 2 - 1,
+      };
     });
-    hero.addEventListener("pointerleave", () => {
-      pointer = null;
-      start();
-    });
+    hero.addEventListener("pointerleave", () => (target = { x: 0, y: 0 }));
+    document.addEventListener("visibilitychange", start);
     // Pause when the hero is off-screen.
     new IntersectionObserver(([entry]) => {
       visible = entry?.isIntersecting ?? true;
       if (visible) start();
     }).observe(canvas);
+    start();
   }
 }
