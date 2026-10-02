@@ -8,6 +8,8 @@ import CommandPalette from "../components/islands/CommandPalette";
 import EasterEggs from "../components/islands/EasterEggs";
 import { copy, profile } from "../data/profile";
 import { site } from "../data/site";
+import { getCollection } from "astro:content";
+import { getOgPages, ogKey } from "../lib/og";
 import { getProjects } from "../lib/projects";
 import { getHomeSections, sourceUrl } from "../lib/sections";
 
@@ -22,6 +24,12 @@ interface Props {
 
 const { title, description, type = "website", terminalOverlay = true } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
+
+// Social preview image for this page; pages without their own (e.g. 404) use the home image.
+const ogPages = await getOgPages();
+const key = ogKey(Astro.url.pathname);
+const ogImage = new URL(`/og/${key in ogPages ? key : "index"}.png`, Astro.site).href;
+const hasPosts = (await getCollection("posts", (post) => !post.data.draft)).length > 0;
 
 // Data for the terminal and command palette islands.
 const projects = (await getProjects()).map((project) => ({
@@ -51,6 +59,9 @@ const paletteSource = {
     <meta name="color-scheme" content="light dark" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    {hasPosts && (
+      <link rel="alternate" type="application/rss+xml" title={profile.name} href="/rss.xml" />
+    )}
     <link rel="preload" href={displayFont} as="font" type="font/woff2" crossorigin />
 
     <meta property="og:type" content={type} />
@@ -58,7 +69,12 @@ const paletteSource = {
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:site_name" content={profile.name} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
 

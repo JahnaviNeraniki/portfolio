@@ -21,7 +21,6 @@ npm run dev      # http://localhost:4321
 | `npm run build`   | Static output in `dist/`                                            |
 | `npm run preview` | Serve the built site                                                |
 | `npm run check`   | Type check, lint, unit tests, build — must pass before every commit |
-| `npm run e2e`     | Playwright smoke + accessibility tests                              |
 | `npm run todo`    | Lists every `TODO:` placeholder still to fill in                    |
 
 ## Edit your content

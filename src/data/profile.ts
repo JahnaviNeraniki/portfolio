@@ -236,6 +236,9 @@ export const copy = {
     error: "cat: page: No such file or directory",
     home: "cd ~",
   },
+  posts: {
+    back: "← All writing",
+  },
   uses: {
     title: "Uses",
     intro: "The tools I use day to day.",

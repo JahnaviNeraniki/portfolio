@@ -1,0 +1,35 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { copy, profile } from "../../data/profile";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("posts", (post) => !post.data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const date = post.data.date;
+---
+
+<BaseLayout
+  title={`${post.data.title} · ${profile.name}`}
+  description={post.data.summary}
+  type="article"
+>
+  <article class="section container-page">
+    <p class="text-mono text-muted">
+      <time datetime={date.toISOString().slice(0, 10)}>
+        {date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+      </time>
+    </p>
+    <h1 class="mt-2 text-4xl md:text-5xl">{post.data.title}</h1>
+    <div class="prose mt-8">
+      <Content />
+    </div>
+    <a href="/#writing" class="btn mt-12">
+      {copy.posts.back}
+    </a>
+  </article>
+</BaseLayout>

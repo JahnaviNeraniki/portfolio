@@ -24,9 +24,32 @@ const posts = (await getCollection("posts", (post) => !post.data.draft)).sort(
 // Section numbers for the "// 01. about" labels, skipping sections that are not shown.
 const sections = await getHomeSections();
 const n = (id: HomeSection["id"]) => sections.findIndex((section) => section.id === id) + 1;
+
+// Structured data for search engines (schema.org Person).
+const person = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: profile.name,
+  jobTitle: profile.experience[0]?.title ?? profile.headline,
+  description: profile.tagline,
+  url: Astro.site?.href,
+  email: `mailto:${profile.email}`,
+  address: { "@type": "PostalAddress", addressLocality: profile.location },
+  sameAs: [
+    profile.links.github,
+    profile.links.linkedin,
+    ...(profile.links.others ?? []).map((l) => l.url),
+  ],
+  alumniOf: (profile.education ?? []).map((e) => ({
+    "@type": "CollegeOrUniversity",
+    name: e.school,
+  })),
+  knowsAbout: profile.skills.flatMap((skill) => skill.items),
+};
 ---
 
 <BaseLayout title={`${profile.name} · ${profile.headline}`} description={profile.tagline}>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(person)} />
   <Hero featuredTitle={featured?.data.title} />
   <About index={n("about")} />
   {featured && <FeaturedProject index={n("featured")} project={featured} />}
