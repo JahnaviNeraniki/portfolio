@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Card from "../components/ui/Card.astro";
+import Tag from "../components/ui/Tag.astro";
+import { copy, profile } from "../data/profile";
+---
+
+<BaseLayout title={`${copy.uses.title} · ${profile.name}`} description={copy.uses.intro}>
+  <section class="section container-page">
+    <p class="section-label" aria-hidden="true">
+      // uses
+    </p>
+    <h1 class="text-4xl md:text-5xl">{copy.uses.title}</h1>
+    <p class="mt-4 text-muted">{copy.uses.intro}</p>
+
+    <div class="mt-10 grid gap-4 md:grid-cols-2">
+      {profile.uses.map((group) => (
+        <Card class="p-5">
+          <h2 class="text-mono !text-sm font-semibold text-accent">{group.category}</h2>
+          <ul class="mt-4 flex flex-col gap-3">
+            {group.items.map((item) => (
+              <li>
+                <Tag name={item.name} icon />
+                {item.note && <p class="mt-1 text-muted">{item.note}</p>}
+              </li>
+            ))}
+          </ul>
+        </Card>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

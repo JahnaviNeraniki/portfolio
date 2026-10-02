@@ -1,8 +1,7 @@
 ---
-import { copy, profile } from "../../data/profile";
+import { copy } from "../../data/profile";
+import { sourceUrl } from "../../lib/sections";
 
-// The site's own repo: https://github.com/<handle>/<handle>.github.io
-const sourceUrl = `${profile.links.github}/${profile.handle}.github.io`;
 const buildDate = new Date();
 const lastUpdated = buildDate.toLocaleDateString("en-US", {
   year: "numeric",

@@ -67,6 +67,15 @@ import { initials } from "../../lib/format";
     display: inline-block;
     transition: transform 400ms ease-out;
   }
+  /* Easter egg: 5 quick clicks spin the monogram */
+  .monogram.is-spinning {
+    animation: monogram-spin 700ms ease-in-out;
+  }
+  @keyframes monogram-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
   .monogram::after {
     content: ".";
     color: var(--accent-2);

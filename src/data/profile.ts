@@ -216,6 +216,30 @@ export const copy = {
     comingSoonBody: "New projects are in the works. Meanwhile, see what I'm building on GitHub.",
     noMatch: "No projects match this filter yet.",
   },
+  palette: {
+    label: "Command palette",
+    placeholder: "Search pages, actions, projects…",
+    results: "Results",
+    noResults: "No results for",
+  },
+  terminal: {
+    pageTitle: "Terminal",
+    welcome: "Welcome to my portfolio terminal.",
+  },
+  eggs: {
+    konami: "You found a secret. Want to talk about agents?",
+    contact: "Contact",
+  },
+  notFound: {
+    title: "Page not found",
+    command: "cat page",
+    error: "cat: page: No such file or directory",
+    home: "cd ~",
+  },
+  uses: {
+    title: "Uses",
+    intro: "The tools I use day to day.",
+  },
   contact: {
     line: "Hiring for an AI Engineer? Let's talk.",
     copyEmail: "Copy email",

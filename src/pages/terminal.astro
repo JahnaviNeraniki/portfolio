@@ -1,0 +1,22 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Terminal from "../components/islands/Terminal";
+import { copy, profile } from "../data/profile";
+import { getProjects } from "../lib/projects";
+
+const projects = (await getProjects()).map((project) => ({
+  slug: project.id,
+  title: project.data.title,
+  summary: project.data.summary,
+  tech: project.data.tech,
+}));
+---
+
+<BaseLayout
+  title={`${copy.terminal.pageTitle} · ${profile.name}`}
+  description={`${profile.name}'s portfolio as a terminal. Type help to start.`}
+  terminalOverlay={false}
+>
+  <h1 class="sr-only">{copy.terminal.pageTitle}</h1>
+  <Terminal client:load projects={projects} fullscreen />
+</BaseLayout>

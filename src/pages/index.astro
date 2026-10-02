@@ -11,6 +11,7 @@ import Writing from "../components/sections/Writing.astro";
 import Contact from "../components/sections/Contact.astro";
 import { profile } from "../data/profile";
 import { getProjects } from "../lib/projects";
+import { getHomeSections, type HomeSection } from "../lib/sections";
 
 const projects = await getProjects();
 const featured = projects.find((project) => project.data.featured);
@@ -21,10 +22,8 @@ const posts = (await getCollection("posts", (post) => !post.data.draft)).sort(
 );
 
 // Section numbers for the "// 01. about" labels, skipping sections that are not shown.
-const order = ["about", featured && "featured", "projects", "experience", "skills"];
-if (posts.length > 0) order.push("writing");
-order.push("contact");
-const n = (id: string) => order.filter(Boolean).indexOf(id) + 1;
+const sections = await getHomeSections();
+const n = (id: HomeSection["id"]) => sections.findIndex((section) => section.id === id) + 1;
 ---
 
 <BaseLayout title={`${profile.name} · ${profile.headline}`} description={profile.tagline}>

@@ -3,18 +3,41 @@ import "../styles/global.css";
 import displayFont from "@fontsource-variable/inter-tight/files/inter-tight-latin-wght-normal.woff2?url";
 import Nav from "../components/ui/Nav.astro";
 import Footer from "../components/ui/Footer.astro";
+import Terminal from "../components/islands/Terminal";
+import CommandPalette from "../components/islands/CommandPalette";
+import EasterEggs from "../components/islands/EasterEggs";
 import { copy, profile } from "../data/profile";
 import { site } from "../data/site";
+import { getProjects } from "../lib/projects";
+import { getHomeSections, sourceUrl } from "../lib/sections";
 
 interface Props {
   /** Full page title, e.g. "DocuMind · Jane Doe" */
   title: string;
   description: string;
   type?: "website" | "article";
+  /** Set false on /terminal, which shows the terminal full screen instead of as an overlay */
+  terminalOverlay?: boolean;
 }
 
-const { title, description, type = "website" } = Astro.props;
+const { title, description, type = "website", terminalOverlay = true } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
+
+// Data for the terminal and command palette islands.
+const projects = (await getProjects()).map((project) => ({
+  slug: project.id,
+  title: project.data.title,
+  summary: project.data.summary,
+  tech: project.data.tech,
+}));
+const paletteSource = {
+  sections: await getHomeSections(),
+  projects,
+  pages: [
+    { href: "/uses", label: copy.uses.title },
+    { href: "/terminal", label: copy.terminal.pageTitle },
+  ],
+};
 ---
 
 <!doctype html>
@@ -78,6 +101,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
       <slot />
     </main>
     <Footer />
+    {terminalOverlay && <Terminal client:idle projects={projects} />}
+    <CommandPalette client:idle source={paletteSource} />
+    <EasterEggs client:idle sourceUrl={sourceUrl} />
     <script>
       import "../scripts/reveal";
     </script>

@@ -1,0 +1,29 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { copy, profile } from "../data/profile";
+---
+
+<BaseLayout title={`404 · ${profile.name}`} description={copy.notFound.title}>
+  <section class="section container-page flex min-h-[60vh] flex-col justify-center">
+    <h1 class="text-display">404</h1>
+    <p class="mt-2 text-xl text-muted">{copy.notFound.title}</p>
+
+    <div class="terminal mt-8 max-w-xl overflow-hidden rounded-xl border border-border bg-bg">
+      <div class="text-mono p-4 text-text">
+        <p class="m-0">
+          <span class="text-accent-2">{profile.handle}@portfolio:~$</span> {copy.notFound.command}
+        </p>
+        <p class="m-0 text-warn">{copy.notFound.error}</p>
+      </div>
+    </div>
+
+    <a href="/" class="btn btn-primary text-mono mt-8 w-fit">
+      {copy.notFound.home}
+    </a>
+  </section>
+</BaseLayout>
+
+<script>
+  import { markEggFound } from "../lib/eggs";
+  markEggFound("404");
+</script>

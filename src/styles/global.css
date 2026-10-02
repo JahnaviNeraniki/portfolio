@@ -390,6 +390,71 @@ dialog::backdrop {
   }
 }
 
+/* ---------- Command palette ---------- */
+.palette-dialog {
+  width: min(640px, calc(100vw - 32px));
+  max-width: none;
+  margin: 12vh auto auto;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 24px 64px -16px rgb(0 0 0 / 0.45);
+}
+
+/* ---------- Terminal: always dark like a real terminal (matrix keeps its green) ---------- */
+.terminal {
+  --bg: #0b0d10;
+  --surface: #14171c;
+  --border: #262a31;
+  --text: #e8eaed;
+  --muted: #9aa0a6;
+  --accent: #8b8cff;
+  --accent-2: #34d399;
+  --warn: #fbbf24;
+}
+[data-theme="matrix"] .terminal {
+  --bg: #000000;
+  --text: #00ff66;
+  --accent: #00ff66;
+  --accent-2: #00ff66;
+}
+.terminal-dialog {
+  width: min(880px, calc(100vw - 32px));
+  height: min(560px, calc(100dvh - 64px));
+  max-width: none;
+  max-height: none;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #262a31;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 24px 64px -16px rgb(0 0 0 / 0.6);
+}
+.terminal-page {
+  height: calc(100dvh - 4rem);
+}
+/* sudo hire-me: lines appear one after another */
+.terminal-staggered > p {
+  animation: line-in 250ms ease-out both;
+}
+.terminal-staggered > p:nth-child(2) {
+  animation-delay: 150ms;
+}
+.terminal-staggered > p:nth-child(3) {
+  animation-delay: 450ms;
+}
+.terminal-staggered > p:nth-child(4) {
+  animation-delay: 750ms;
+}
+@keyframes line-in {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+}
+
 /* ---------- Theme toggle icon: rotate + crossfade, 250ms ---------- */
 .theme-icon {
   position: absolute;
