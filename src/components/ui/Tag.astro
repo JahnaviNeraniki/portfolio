@@ -1,0 +1,21 @@
+---
+import { brandIcon } from "../../lib/icons";
+
+interface Props {
+  name: string;
+  /** Show the Simple Icons logo when one exists */
+  icon?: boolean;
+}
+
+const { name, icon = false } = Astro.props;
+const logo = icon ? brandIcon(name) : undefined;
+---
+
+<span class="tag">
+  {logo && (
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true">
+      <path d={logo.path} />
+    </svg>
+  )}
+  {name}
+</span>

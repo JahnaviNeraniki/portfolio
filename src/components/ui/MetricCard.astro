@@ -1,0 +1,16 @@
+---
+interface Props {
+  label: string;
+  value: string;
+}
+
+const { label, value } = Astro.props;
+const pending = value.includes("TODO");
+---
+
+<div class="rounded-lg border border-border bg-bg p-4">
+  <p class:list={["font-display text-2xl font-semibold", pending ? "text-muted" : "text-text"]}>
+    {value}
+  </p>
+  <p class="text-mono mt-1 text-muted">{label}</p>
+</div>

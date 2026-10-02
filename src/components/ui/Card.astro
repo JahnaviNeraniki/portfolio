@@ -1,0 +1,14 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"div"> & {
+  /** Lift + accent glow on hover */
+  hover?: boolean;
+};
+
+const { hover = false, class: className, ...rest } = Astro.props;
+---
+
+<div class:list={["card", hover && "card-hover", className]} {...rest}>
+  <slot />
+</div>

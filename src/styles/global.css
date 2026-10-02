@@ -308,6 +308,69 @@
   }
 }
 
+/* Tech tags */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+
+/* Controls that only work with JavaScript stay hidden without it */
+html:not(.js) .js-only {
+  display: none !important;
+}
+
+/* Section reveal: fade + 12px rise, once, 400ms ease-out (src/scripts/reveal.ts) */
+@media (prefers-reduced-motion: no-preference) {
+  .js .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity 400ms ease-out,
+      transform 400ms ease-out;
+  }
+  .js .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Small notification (Copied!, easter eggs) */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 60;
+  padding: 10px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  box-shadow: 0 12px 32px -12px rgb(0 0 0 / 0.4);
+  transform: translate(-50%, 0);
+  transition:
+    opacity 150ms ease-out,
+    transform 150ms ease-out;
+}
+.toast:empty,
+.toast[hidden] {
+  display: block;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 8px);
+}
+
 /* Skip-link target: focusable, but no ring around the whole page */
 main:focus {
   outline: none;

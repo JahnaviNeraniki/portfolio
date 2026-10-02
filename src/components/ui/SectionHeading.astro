@@ -1,0 +1,16 @@
+---
+interface Props {
+  /** 1-based position on the page, shown as "// 01." */
+  index: number;
+  /** Section id, shown in the mono label */
+  id: string;
+  title: string;
+}
+
+const { index, id, title } = Astro.props;
+---
+
+<p class="section-label" aria-hidden="true">
+  // {String(index).padStart(2, "0")}. {id}
+</p>
+<h2 id={`${id}-title`}>{title}</h2>

@@ -1,24 +1,39 @@
 ---
-// Step 2 layout preview; the real sections replace this in Step 3.
+import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/sections/Hero.astro";
+import About from "../components/sections/About.astro";
+import FeaturedProject from "../components/sections/FeaturedProject.astro";
+import Projects from "../components/sections/Projects.astro";
+import Experience from "../components/sections/Experience.astro";
+import Skills from "../components/sections/Skills.astro";
+import Writing from "../components/sections/Writing.astro";
+import Contact from "../components/sections/Contact.astro";
 import { profile } from "../data/profile";
-import { navLinks } from "../lib/nav";
+import { getProjects } from "../lib/projects";
+
+const projects = await getProjects();
+const featured = projects.find((project) => project.data.featured);
+const others = projects.filter((project) => project !== featured);
+
+const posts = (await getCollection("posts", (post) => !post.data.draft)).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+
+// Section numbers for the "// 01. about" labels, skipping sections that are not shown.
+const order = ["about", featured && "featured", "projects", "experience", "skills"];
+if (posts.length > 0) order.push("writing");
+order.push("contact");
+const n = (id: string) => order.filter(Boolean).indexOf(id) + 1;
 ---
 
 <BaseLayout title={`${profile.name} · ${profile.headline}`} description={profile.tagline}>
-  <section class="section container-page">
-    <h1 class="text-display">{profile.name}</h1>
-    <p class="mt-4 text-muted">{profile.headline}</p>
-  </section>
-  {navLinks.map((link, i) => (
-    <section id={link.id} class="section container-page min-h-[60vh] border-t border-border">
-      <p class="section-label">
-        // {String(i + 1).padStart(2, "0")}. {link.id}
-      </p>
-      <h2>{link.label}</h2>
-      <div class="card card-hover mt-6 p-6">
-        <p class="text-muted">Section content arrives in Step 3.</p>
-      </div>
-    </section>
-  ))}
+  <Hero featuredTitle={featured?.data.title} />
+  <About index={n("about")} />
+  {featured && <FeaturedProject index={n("featured")} project={featured} />}
+  <Projects index={n("projects")} projects={others} />
+  <Experience index={n("experience")} />
+  <Skills index={n("skills")} />
+  {posts.length > 0 && <Writing index={n("writing")} posts={posts} />}
+  <Contact index={n("contact")} />
 </BaseLayout>

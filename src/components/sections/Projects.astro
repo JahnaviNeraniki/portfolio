@@ -1,0 +1,179 @@
+---
+import { Image } from "astro:assets";
+import { ArrowRight } from "lucide-react";
+import { siGithub } from "simple-icons";
+import Card from "../ui/Card.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
+import Tag from "../ui/Tag.astro";
+import { copy, profile } from "../../data/profile";
+import { PROJECT_FILTERS, filterSlug, projectFilters, type Project } from "../../lib/projects";
+
+interface Props {
+  index: number;
+  /** Non-featured projects, already sorted by order */
+  projects: Project[];
+}
+
+const { index, projects } = Astro.props;
+const showGrid = projects.length >= 2;
+---
+
+<section id="projects" class="section container-page reveal" aria-labelledby="projects-title">
+  <SectionHeading index={index} id="projects" title={copy.sections.projects} />
+
+  {showGrid ? (
+    <>
+      <div
+        class="js-only mt-8 flex flex-wrap gap-2"
+        role="group"
+        aria-label={copy.projects.filterLabel}
+      >
+        {PROJECT_FILTERS.map((filter) => (
+          <button
+            type="button"
+            class="chip"
+            data-filter={filterSlug(filter)}
+            aria-pressed={filter === "All" ? "true" : "false"}
+          >
+            {filter}
+          </button>
+        ))}
+      </div>
+
+      <ul class="mt-8 grid gap-6 md:grid-cols-2">
+        {projects.map((project) => (
+          <li
+            data-project
+            data-filters={projectFilters(project.data.tech).map(filterSlug).join(" ")}
+          >
+            <Card hover class="flex h-full flex-col overflow-hidden">
+              {project.data.cover && (
+                <Image
+                  src={project.data.cover}
+                  alt=""
+                  widths={[400, 800]}
+                  sizes="(min-width: 768px) 536px, calc(100vw - 48px)"
+                  class="aspect-video w-full border-b border-border object-cover"
+                />
+              )}
+              <div class="flex flex-1 flex-col gap-3 p-5">
+                <h3>{project.data.title}</h3>
+                <p class="text-muted">{project.data.summary}</p>
+                <ul class="flex flex-wrap gap-2" aria-label="Tech stack">
+                  {project.data.tech.map((name) => (
+                    <li>
+                      <Tag name={name} />
+                    </li>
+                  ))}
+                </ul>
+                <div class="mt-auto flex flex-wrap gap-4 pt-2">
+                  <a href={`/projects/${project.id}`} class="inline-flex items-center gap-1">
+                    {copy.projects.caseStudy}
+                    <span class="sr-only">: {project.data.title}</span>
+                    <ArrowRight size={16} aria-hidden="true" />
+                  </a>
+                  {project.data.repo && (
+                    <a
+                      href={project.data.repo}
+                      class="inline-flex items-center gap-1"
+                      rel="noopener"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path d={siGithub.path} />
+                      </svg>
+                      {copy.projects.code}
+                      <span class="sr-only">: {project.data.title}</span>
+                    </a>
+                  )}
+                </div>
+              </div>
+            </Card>
+          </li>
+        ))}
+      </ul>
+      <p class="mt-6 text-muted" data-no-match hidden>
+        {copy.projects.noMatch}
+      </p>
+    </>
+  ) : (
+    <Card class="mt-8 p-6 md:p-8">
+      <h3>{copy.projects.comingSoonTitle}</h3>
+      <p class="mt-2 text-muted">
+        {copy.projects.comingSoonBody}{" "}
+        <a href={profile.links.github} rel="noopener">
+          GitHub
+        </a>
+      </p>
+    </Card>
+  )}
+</section>
+
+<script>
+  // Filter chips: state lives in the URL hash (#projects/python) so filtered views are shareable.
+  const chips = [...document.querySelectorAll<HTMLButtonElement>("[data-filter]")];
+  const cards = [...document.querySelectorAll<HTMLElement>("[data-project]")];
+  const noMatch = document.querySelector<HTMLElement>("[data-no-match]");
+  const PREFIX = "#projects/";
+
+  function apply(filter: string) {
+    const valid = chips.some((chip) => chip.dataset.filter === filter) ? filter : "all";
+    for (const chip of chips) {
+      chip.setAttribute("aria-pressed", String(chip.dataset.filter === valid));
+    }
+    let shown = 0;
+    for (const card of cards) {
+      const match = card.dataset.filters?.split(" ").includes(valid) ?? false;
+      card.hidden = !match;
+      if (match) shown += 1;
+    }
+    if (noMatch) noMatch.hidden = shown > 0;
+  }
+
+  if (chips.length > 0) {
+    for (const chip of chips) {
+      chip.addEventListener("click", () => {
+        const filter = chip.dataset.filter ?? "all";
+        history.replaceState(null, "", filter === "all" ? "#projects" : `${PREFIX}${filter}`);
+        apply(filter);
+      });
+    }
+    const fromHash = () => {
+      if (!location.hash.startsWith(PREFIX)) return;
+      apply(decodeURIComponent(location.hash.slice(PREFIX.length)));
+      document.getElementById("projects")?.scrollIntoView();
+    };
+    window.addEventListener("hashchange", fromHash);
+    fromHash();
+  }
+</script>
+
+<style>
+  .chip {
+    min-height: 36px;
+    padding: 4px 14px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    cursor: pointer;
+    transition:
+      color 150ms ease-out,
+      border-color 150ms ease-out;
+  }
+  .chip:hover {
+    color: var(--text);
+  }
+  .chip[aria-pressed="true"] {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--accent-contrast);
+  }
+</style>

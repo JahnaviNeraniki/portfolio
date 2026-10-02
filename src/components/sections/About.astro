@@ -1,0 +1,121 @@
+---
+import { Image } from "astro:assets";
+import { MapPin, Pause, Play, Sparkles } from "lucide-react";
+import SectionHeading from "../ui/SectionHeading.astro";
+import { copy, profile } from "../../data/profile";
+import { resolveImage } from "../../lib/assets";
+
+interface Props {
+  index: number;
+}
+
+const { index } = Astro.props;
+const photo = resolveImage(profile.photo);
+---
+
+<section id="about" class="section container-page reveal" aria-labelledby="about-title">
+  <SectionHeading index={index} id="about" title={copy.sections.about} />
+
+  <div class="mt-10 grid gap-10 md:grid-cols-[minmax(0,280px)_1fr] md:gap-16">
+    <div>
+      <Image
+        src={photo}
+        alt={`Photo of ${profile.name}`}
+        widths={[280, 560]}
+        sizes="280px"
+        class="photo aspect-square w-full max-w-[280px] rounded-2xl border border-border object-cover"
+      />
+      <p class="text-mono mt-4 flex items-center gap-2 text-muted">
+        <MapPin size={16} aria-hidden="true" />
+        {profile.location}
+      </p>
+    </div>
+
+    <div class="flex flex-col gap-6">
+      <div class="flex flex-col gap-4">
+        {profile.about.map((paragraph) => (
+          <p>{paragraph}</p>
+        ))}
+      </div>
+
+      <div class="card p-5">
+        <h3 class="text-mono font-semibold text-accent-2">{copy.about.now}</h3>
+        <ul class="mt-3 flex list-disc flex-col gap-1 pl-5 marker:text-accent-2">
+          {profile.now.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      </div>
+
+      {profile.funFacts.length > 0 && (
+        <div class="fun-fact flex items-center gap-3" data-fun-facts>
+          <p class="tag !whitespace-normal !py-1.5">
+            <Sparkles size={14} aria-hidden="true" className="shrink-0 text-warn" />
+            <span>
+              <span class="sr-only">{copy.about.funFact}: </span>
+              <span data-fun-fact-text>{profile.funFacts[0]}</span>
+            </span>
+          </p>
+          {profile.funFacts.length > 1 && (
+            <button
+              type="button"
+              class="icon-btn js-only shrink-0"
+              aria-label="Pause fun facts"
+              data-fun-fact-toggle
+            >
+              <span data-icon="pause">
+                <Pause size={16} aria-hidden="true" />
+              </span>
+              <span data-icon="play" hidden>
+                <Play size={16} aria-hidden="true" />
+              </span>
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ facts: profile.funFacts }}>
+  // Rotates the fun fact every 6 seconds; the button pauses and resumes.
+  const box = document.querySelector("[data-fun-facts]");
+  const text = box?.querySelector("[data-fun-fact-text]");
+  const toggle = box?.querySelector("[data-fun-fact-toggle]");
+  if (box && text && toggle && facts.length > 1) {
+    let index = 0;
+    let timer = 0;
+    const play = () => {
+      timer = window.setInterval(() => {
+        index = (index + 1) % facts.length;
+        text.textContent = facts[index];
+      }, 6000);
+    };
+    const setPaused = (paused) => {
+      toggle.setAttribute("aria-label", paused ? "Resume fun facts" : "Pause fun facts");
+      toggle.querySelector('[data-icon="pause"]').hidden = paused;
+      toggle.querySelector('[data-icon="play"]').hidden = !paused;
+    };
+    toggle.addEventListener("click", () => {
+      const paused = timer === 0;
+      if (paused) play();
+      else {
+        window.clearInterval(timer);
+        timer = 0;
+      }
+      setPaused(!paused);
+    });
+    play();
+  }
+</script>
+
+<style>
+  /* Slight tilt that straightens on hover */
+  .photo {
+    transform: rotate(-3deg);
+    transition: transform 250ms ease-out;
+  }
+  .photo:hover {
+    transform: rotate(0deg);
+  }
+</style>
