@@ -1,22 +1,24 @@
 ---
-// P0 placeholder page; replaced by the full home page in Step 3.
+// Step 2 layout preview; the real sections replace this in Step 3.
+import BaseLayout from "../layouts/BaseLayout.astro";
 import { profile } from "../data/profile";
+import { navLinks } from "../lib/nav";
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{profile.name}</title>
-    <meta name="description" content={profile.headline} />
-  </head>
-  <body>
-    <main>
-      <h1>{profile.name}</h1>
-      <p>{profile.headline}</p>
-      <p>Portfolio under construction.</p>
-    </main>
-  </body>
-</html>
+<BaseLayout title={`${profile.name} · ${profile.headline}`} description={profile.tagline}>
+  <section class="section container-page">
+    <h1 class="text-display">{profile.name}</h1>
+    <p class="mt-4 text-muted">{profile.headline}</p>
+  </section>
+  {navLinks.map((link, i) => (
+    <section id={link.id} class="section container-page min-h-[60vh] border-t border-border">
+      <p class="section-label">
+        // {String(i + 1).padStart(2, "0")}. {link.id}
+      </p>
+      <h2>{link.label}</h2>
+      <div class="card card-hover mt-6 p-6">
+        <p class="text-muted">Section content arrives in Step 3.</p>
+      </div>
+    </section>
+  ))}
+</BaseLayout>

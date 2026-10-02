@@ -103,3 +103,22 @@ export const profile: Profile = {
     },
   ],
 };
+
+/** Fixed wording used around the site (labels, buttons, short lines). Edit freely. */
+export const copy = {
+  skipLink: "Skip to content",
+  nav: {
+    about: "About",
+    projects: "Projects",
+    experience: "Experience",
+    skills: "Skills",
+    contact: "Contact",
+    search: "Search",
+    terminal: "Terminal",
+  },
+  footer: {
+    builtWith: "Built with Astro, hosted free on GitHub Pages",
+    lastUpdated: "Last updated",
+    source: "Source code",
+  },
+};

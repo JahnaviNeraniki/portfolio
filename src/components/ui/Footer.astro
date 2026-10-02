@@ -1,0 +1,27 @@
+---
+import { copy, profile } from "../../data/profile";
+
+// The site's own repo: https://github.com/<handle>/<handle>.github.io
+const sourceUrl = `${profile.links.github}/${profile.handle}.github.io`;
+const buildDate = new Date();
+const lastUpdated = buildDate.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+});
+---
+
+<footer class="border-t border-border">
+  <div class="container-page flex flex-col gap-2 py-8 text-mono text-muted sm:flex-row sm:items-center sm:justify-between">
+    <p>{copy.footer.builtWith}</p>
+    <p class="flex flex-wrap gap-x-4">
+      <span>
+        {copy.footer.lastUpdated}
+        <time datetime={buildDate.toISOString().slice(0, 10)}>{lastUpdated}</time>
+      </span>
+      <a href={sourceUrl} rel="noopener">
+        {copy.footer.source}
+      </a>
+    </p>
+  </div>
+</footer>

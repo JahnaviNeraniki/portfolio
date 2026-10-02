@@ -1,0 +1,362 @@
+@import "tailwindcss";
+
+/* ---------- Fonts: self-hosted, Latin subset only ---------- */
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("../../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2")
+    format("woff2-variations");
+}
+@font-face {
+  font-family: "Inter Tight Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("../../node_modules/@fontsource-variable/inter-tight/files/inter-tight-latin-wght-normal.woff2")
+    format("woff2-variations");
+}
+@font-face {
+  font-family: "JetBrains Mono Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 800;
+  src: url("../../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2")
+    format("woff2-variations");
+}
+
+/* ---------- Colour tokens (spec 8.1) ---------- */
+:root,
+[data-theme="light"] {
+  --bg: #fafaf9;
+  --surface: #ffffff;
+  --border: #e7e5e4;
+  --text: #1c1917;
+  --muted: #57534e;
+  --accent: #4f46e5;
+  --accent-2: #059669;
+  --warn: #b45309;
+  /* Text on accent-filled buttons */
+  --accent-contrast: #ffffff;
+}
+
+[data-theme="dark"],
+[data-theme="matrix"] {
+  --bg: #0b0d10;
+  --surface: #14171c;
+  --border: #262a31;
+  --text: #e8eaed;
+  --muted: #9aa0a6;
+  --accent: #8b8cff;
+  --accent-2: #34d399;
+  --warn: #fbbf24;
+  --accent-contrast: #0b0d10;
+}
+
+/* Easter-egg theme: green on black */
+[data-theme="matrix"] {
+  --bg: #000000;
+  --text: #00ff66;
+  --accent: #00ff66;
+  --accent-contrast: #000000;
+}
+
+/* No JavaScript: follow the OS setting */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --bg: #0b0d10;
+    --surface: #14171c;
+    --border: #262a31;
+    --text: #e8eaed;
+    --muted: #9aa0a6;
+    --accent: #8b8cff;
+    --accent-2: #34d399;
+    --warn: #fbbf24;
+    --accent-contrast: #0b0d10;
+  }
+}
+
+/* Expose tokens to Tailwind utilities: bg-bg, text-muted, border-border, ... */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-warn: var(--warn);
+  --color-accent-contrast: var(--accent-contrast);
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Inter Tight Variable", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, "Cascadia Code", Consolas, monospace;
+}
+
+/* ---------- Base ---------- */
+@layer base {
+  html {
+    background: var(--bg);
+    color: var(--text);
+    scroll-behavior: smooth;
+    /* Keep anchored sections clear of the sticky nav */
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: 1rem; /* 16px mobile */
+    line-height: 1.65;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  main {
+    flex: 1;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+  h2 {
+    font-size: 1.75rem; /* 28px */
+    font-weight: 600;
+  }
+  h3 {
+    font-size: 1.25rem; /* 20px */
+    font-weight: 600;
+  }
+
+  p {
+    max-width: 68ch;
+  }
+
+  a {
+    color: var(--accent);
+    text-underline-offset: 3px;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-contrast);
+  }
+
+  @media (min-width: 768px) {
+    body {
+      font-size: 1.125rem; /* 18px desktop */
+    }
+    h2 {
+      font-size: 2.25rem; /* 36px */
+    }
+    h3 {
+      font-size: 1.375rem; /* 22px */
+    }
+  }
+}
+
+/* ---------- Reusable pieces ---------- */
+@layer components {
+  /* Content max width 1120px, 24px side padding */
+  .container-page {
+    width: 100%;
+    max-width: calc(1120px + 48px);
+    margin-inline: auto;
+    padding-inline: 24px;
+  }
+
+  /* Sections separated by 64px mobile / 96px desktop */
+  .section {
+    padding-block: 64px;
+  }
+  @media (min-width: 768px) {
+    .section {
+      padding-block: 96px;
+    }
+  }
+
+  /* Name in the hero: 44px mobile / 72px desktop */
+  .text-display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 2.75rem;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+  @media (min-width: 768px) {
+    .text-display {
+      font-size: 4.5rem;
+    }
+  }
+
+  /* Labels, tags, terminal: 13px mobile / 14px desktop */
+  .text-mono {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+  @media (min-width: 768px) {
+    .text-mono {
+      font-size: 0.875rem;
+    }
+  }
+
+  /* Small mono label above section headings: // 02. projects */
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  /* Cards: 12px radius, 1px border, hover lifts 2px with a soft accent glow */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition:
+      transform 150ms ease-out,
+      border-color 150ms ease-out,
+      box-shadow 150ms ease-out;
+  }
+  .card-hover:hover,
+  .card-hover:focus-within {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+    box-shadow: 0 8px 24px -12px color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-weight: 500;
+    font-size: 1rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      transform 150ms ease-out,
+      border-color 150ms ease-out,
+      background-color 150ms ease-out;
+  }
+  .btn:hover {
+    border-color: var(--accent);
+    transform: translateY(-1px);
+  }
+  .btn-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-contrast);
+  }
+  .btn-primary:hover {
+    background: color-mix(in srgb, var(--accent) 88%, var(--text));
+  }
+
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-width: 40px;
+    height: 40px;
+    padding-inline: 8px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition:
+      color 150ms ease-out,
+      border-color 150ms ease-out;
+  }
+  .icon-btn:hover {
+    color: var(--text);
+    border-color: var(--border);
+  }
+
+  .skip-link {
+    position: absolute;
+    left: 16px;
+    top: -100px;
+    z-index: 100;
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: var(--accent);
+    color: var(--accent-contrast);
+    font-weight: 600;
+  }
+  .skip-link:focus {
+    top: 16px;
+  }
+}
+
+/* Skip-link target: focusable, but no ring around the whole page */
+main:focus {
+  outline: none;
+}
+
+/* ---------- Overlays (mobile sheet, palette, terminal): scale 0.98 → 1 + fade, 150ms ---------- */
+dialog[open] {
+  animation: overlay-in 150ms ease-out;
+}
+dialog::backdrop {
+  background: rgb(0 0 0 / 0.55);
+}
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+}
+
+/* ---------- Theme toggle icon: rotate + crossfade, 250ms ---------- */
+.theme-icon {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.6);
+  transition:
+    opacity 250ms ease-out,
+    transform 250ms ease-out;
+}
+[data-theme-pref="light"] .theme-icon-light,
+[data-theme-pref="dark"] .theme-icon-dark,
+[data-theme-pref="system"] .theme-icon-system,
+[data-theme-pref="matrix"] .theme-icon-dark,
+:root:not([data-theme-pref]) .theme-icon-system {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Reduced motion: every animation becomes instant ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
