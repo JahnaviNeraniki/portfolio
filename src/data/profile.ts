@@ -1,6 +1,8 @@
 // THE content file. Every name, sentence, date, link, and number on the site comes from here
 // (or from the Markdown in src/content/). Replace every TODO placeholder, then run `npm run todo`.
 
+import { withBase } from "../lib/url";
+
 export type SkillGroup = "AI & LLMs" | "Backend" | "Data" | "DevOps" | "Frontend";
 
 export interface Profile {
@@ -58,7 +60,7 @@ export const profile: Profile = {
   links: {
     github: "https://github.com/JahnaviNeraniki",
     linkedin: "https://www.linkedin.com/in/neranikijahnavi21/",
-    resume: "/resume.pdf",
+    resume: withBase("/resume.pdf"),
     others: [{ label: "LeetCode", url: "https://leetcode.com/u/Neraniki_Jahnavi/" }],
   },
   about: [

@@ -12,6 +12,7 @@ import { getCollection } from "astro:content";
 import { getOgPages, ogKey } from "../lib/og";
 import { getProjects } from "../lib/projects";
 import { getHomeSections, sourceUrl } from "../lib/sections";
+import { withBase, withoutBase } from "../lib/url";
 
 interface Props {
   /** Full page title, e.g. "DocuMind · Jane Doe" */
@@ -27,8 +28,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 
 // Social preview image for this page; pages without their own (e.g. 404) use the home image.
 const ogPages = await getOgPages();
-const key = ogKey(Astro.url.pathname);
-const ogImage = new URL(`/og/${key in ogPages ? key : "index"}.png`, Astro.site).href;
+const key = ogKey(withoutBase(Astro.url.pathname));
+const ogImage = new URL(withBase(`/og/${key in ogPages ? key : "index"}.png`), Astro.site).href;
 const hasPosts = (await getCollection("posts", (post) => !post.data.draft)).length > 0;
 
 // Data for the terminal and command palette islands.
@@ -57,10 +58,15 @@ const paletteSource = {
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <meta name="color-scheme" content="light dark" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
+    <link rel="sitemap" href={withBase("/sitemap-index.xml")} />
     {hasPosts && (
-      <link rel="alternate" type="application/rss+xml" title={profile.name} href="/rss.xml" />
+      <link
+        rel="alternate"
+        type="application/rss+xml"
+        title={profile.name}
+        href={withBase("/rss.xml")}
+      />
     )}
     <link rel="preload" href={displayFont} as="font" type="font/woff2" crossorigin />
 

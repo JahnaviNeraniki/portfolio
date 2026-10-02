@@ -6,12 +6,14 @@ import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import { todoWarnings } from "./scripts/todo.mjs";
 
-// Your GitHub Pages URL. The repo must be named JahnaviNeraniki.github.io.
-// No `base` is set: a user-site repo is served from the root URL.
+// Live at https://jahnavineraniki.github.io/portfolio/ — GitHub Pages serves a repo named
+// "portfolio" from the /portfolio sub-path, so every internal link uses withBase() (src/lib/url.ts).
 const SITE = "https://jahnavineraniki.github.io";
+const BASE = "/portfolio";
 
 export default defineConfig({
   site: SITE,
+  base: BASE,
   integrations: [react(), mdx(), sitemap(), todoWarnings()],
   vite: {
     plugins: [tailwindcss()],

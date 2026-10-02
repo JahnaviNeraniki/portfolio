@@ -3,6 +3,7 @@ import type { CollectionEntry } from "astro:content";
 import Card from "../ui/Card.astro";
 import SectionHeading from "../ui/SectionHeading.astro";
 import { copy } from "../../data/profile";
+import { withBase } from "../../lib/url";
 
 interface Props {
   index: number;
@@ -30,7 +31,10 @@ const { index, posts } = Astro.props;
             </time>
           </p>
           <h3 class="mt-1">
-            <a href={`/posts/${post.id}`} class="text-text no-underline hover:text-accent">
+            <a
+              href={withBase(`/posts/${post.id}`)}
+              class="text-text no-underline hover:text-accent"
+            >
               {post.data.title}
             </a>
           </h3>

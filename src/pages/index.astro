@@ -12,6 +12,7 @@ import Contact from "../components/sections/Contact.astro";
 import { profile } from "../data/profile";
 import { getProjects } from "../lib/projects";
 import { getHomeSections, type HomeSection } from "../lib/sections";
+import { withBase } from "../lib/url";
 
 const projects = await getProjects();
 const featured = projects.find((project) => project.data.featured);
@@ -32,7 +33,7 @@ const person = {
   name: profile.name,
   jobTitle: profile.experience[0]?.title ?? profile.headline,
   description: profile.tagline,
-  url: Astro.site?.href,
+  url: new URL(withBase("/"), Astro.site).href,
   email: `mailto:${profile.email}`,
   address: { "@type": "PostalAddress", addressLocality: profile.location },
   sameAs: [

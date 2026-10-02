@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { copy, profile } from "../data/profile";
+import { withBase } from "../lib/url";
 ---
 
 <BaseLayout title={`404 · ${profile.name}`} description={copy.notFound.title}>
@@ -17,7 +18,7 @@ import { copy, profile } from "../data/profile";
       </div>
     </div>
 
-    <a href="/" class="btn btn-primary text-mono mt-8 w-fit">
+    <a href={withBase("/")} class="btn btn-primary text-mono mt-8 w-fit">
       {copy.notFound.home}
     </a>
   </section>

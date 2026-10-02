@@ -7,6 +7,7 @@ import SectionHeading from "../ui/SectionHeading.astro";
 import Tag from "../ui/Tag.astro";
 import { copy, profile } from "../../data/profile";
 import { PROJECT_FILTERS, filterSlug, projectFilters, type Project } from "../../lib/projects";
+import { withBase } from "../../lib/url";
 
 interface Props {
   index: number;
@@ -67,7 +68,10 @@ const showGrid = projects.length >= 2;
                   ))}
                 </ul>
                 <div class="mt-auto flex flex-wrap gap-4 pt-2">
-                  <a href={`/projects/${project.id}`} class="inline-flex items-center gap-1">
+                  <a
+                    href={withBase(`/projects/${project.id}`)}
+                    class="inline-flex items-center gap-1"
+                  >
                     {copy.projects.caseStudy}
                     <span class="sr-only">: {project.data.title}</span>
                     <ArrowRight size={16} aria-hidden="true" />

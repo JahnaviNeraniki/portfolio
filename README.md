@@ -1,7 +1,7 @@
 # Neraniki Jahnavi — Portfolio
 
 Personal portfolio site, built with [Astro](https://astro.build) and hosted free on GitHub Pages at
-**https://jahnavineraniki.github.io**.
+**https://jahnavineraniki.github.io/portfolio/**.
 
 It has a terminal mode (press <kbd>`</kbd>), a command palette (<kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>K</kbd>),
 light/dark themes and a few easter eggs. It ships static HTML, with JavaScript only for the
@@ -70,23 +70,23 @@ The workflow in `.github/workflows/deploy.yml` builds and deploys on every push 
 
 **One-time setup:**
 
-1. Create a **public** GitHub repository named exactly **`JahnaviNeraniki.github.io`** (empty: no
-   README, .gitignore or licence).
+1. Create a **public** GitHub repository named exactly **`portfolio`** (empty: no README, .gitignore
+   or licence). GitHub Pages serves it at `/portfolio/`, which matches `base` in `astro.config.mjs`.
 2. Push this project to its `main` branch:
    ```bash
-   git remote add origin https://github.com/JahnaviNeraniki/JahnaviNeraniki.github.io.git
+   git remote add origin https://github.com/JahnaviNeraniki/portfolio.git
    git push -u origin main
    ```
 3. In the repo: **Settings → Pages → Build and deployment → Source → GitHub Actions**.
 4. Open the **Actions** tab. When the "Deploy to GitHub Pages" run is green (about 1–2 minutes), the
-   site is live at https://jahnavineraniki.github.io.
+   site is live at https://jahnavineraniki.github.io/portfolio/.
 
 After that, every `git push` to `main` redeploys the site.
 
 ### Custom domain (optional)
 
 Add `public/CNAME` containing just the domain (e.g. `yourname.dev`), set `SITE` in
-`astro.config.mjs` to `https://yourname.dev`, add the DNS records from GitHub's
+`astro.config.mjs` to `https://yourname.dev` and `BASE` to `"/"`, add the DNS records from GitHub's
 "Managing a custom domain" docs at your registrar, then enter the domain under
 **Settings → Pages** and tick **Enforce HTTPS**.
 

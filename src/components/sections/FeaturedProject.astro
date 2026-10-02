@@ -8,6 +8,7 @@ import Tag from "../ui/Tag.astro";
 import VideoEmbed from "../ui/VideoEmbed.astro";
 import { copy } from "../../data/profile";
 import type { Project } from "../../lib/projects";
+import { withBase } from "../../lib/url";
 
 interface Props {
   index: number;
@@ -46,7 +47,7 @@ const { title, summary, video, poster, metrics, tech, repo } = project.data;
     </ul>
 
     <div class="mt-8 flex flex-wrap gap-3">
-      <Button href={`/projects/${project.id}`} variant="primary">
+      <Button href={withBase(`/projects/${project.id}`)} variant="primary">
         {copy.featured.caseStudy}
         <ArrowRight size={18} aria-hidden="true" />
       </Button>

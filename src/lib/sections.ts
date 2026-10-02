@@ -23,5 +23,5 @@ export async function getHomeSections(): Promise<HomeSection[]> {
   return ids.map((id) => ({ id, label: copy.sections[id] }));
 }
 
-/** This site's own repository: https://github.com/<handle>/<handle>.github.io */
-export const sourceUrl = `${profile.links.github}/${profile.handle}.github.io`;
+/** This site's own repository: https://github.com/<handle>/portfolio */
+export const sourceUrl = `${profile.links.github}/portfolio`;

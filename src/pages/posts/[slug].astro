@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { copy, profile } from "../../data/profile";
+import { withBase } from "../../lib/url";
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts", (post) => !post.data.draft);
@@ -28,7 +29,7 @@ const date = post.data.date;
     <div class="prose mt-8">
       <Content />
     </div>
-    <a href="/#writing" class="btn mt-12">
+    <a href={withBase("/#writing")} class="btn mt-12">
       {copy.posts.back}
     </a>
   </article>

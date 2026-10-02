@@ -11,6 +11,7 @@ import {
 } from "../../lib/search";
 import { setThemePref } from "../../lib/theme";
 import { showToast } from "../../lib/toast";
+import { withBase } from "../../lib/url";
 
 export interface PaletteSignal {
   /** Increases with every request from the launcher */
@@ -68,7 +69,7 @@ export default function PaletteDialog({ source, signal }: Props) {
   const run = (item: PaletteItem) => {
     close();
     if (item.href) {
-      window.location.href = item.href;
+      window.location.href = withBase(item.href);
       return;
     }
     switch (item.action) {

@@ -3,6 +3,7 @@ import rss from "@astrojs/rss";
 import type { APIRoute, GetStaticPaths } from "astro";
 import { getCollection } from "astro:content";
 import { profile } from "../data/profile";
+import { withBase } from "../lib/url";
 
 const getPosts = async () =>
   (await getCollection("posts", (post) => !post.data.draft)).sort(
@@ -21,6 +22,6 @@ export const GET: APIRoute = async ({ site }) =>
       title: post.data.title,
       description: post.data.summary,
       pubDate: post.data.date,
-      link: `/posts/${post.id}/`,
+      link: withBase(`/posts/${post.id}/`),
     })),
   });

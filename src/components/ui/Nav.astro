@@ -4,12 +4,13 @@ import MobileMenu from "../islands/MobileMenu";
 import { copy, profile } from "../../data/profile";
 import { navLinks } from "../../lib/nav";
 import { initials } from "../../lib/format";
+import { withBase } from "../../lib/url";
 ---
 
 <header class="sticky top-0 z-40 border-b border-border bg-bg/85 backdrop-blur-md">
   <nav aria-label="Main" class="container-page flex h-16 items-center justify-between gap-4">
     <a
-      href="/#top"
+      href={withBase("/#top")}
       id="monogram"
       class="monogram font-mono text-lg font-bold text-text no-underline"
       aria-label={`${profile.name}, back to top`}

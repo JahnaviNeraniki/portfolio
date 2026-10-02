@@ -11,6 +11,7 @@ import { copy, profile } from "../../data/profile";
 import { eggProgress } from "../../lib/eggs";
 import { setThemePref } from "../../lib/theme";
 import { showToast } from "../../lib/toast";
+import { withBase } from "../../lib/url";
 import {
   complete,
   runCommand,
@@ -56,7 +57,7 @@ function renderSegment(segment: Segment, key: number): ReactNode {
     return (
       <a
         key={key}
-        href={segment.href}
+        href={withBase(segment.href)}
         className="text-accent underline"
         download={segment.download || undefined}
         rel={external ? "noopener" : undefined}
@@ -103,7 +104,7 @@ export default function TerminalWindow({ projects, fullscreen = false, openSigna
   }, []);
 
   const close = useCallback(() => {
-    if (fullscreen) window.location.href = "/";
+    if (fullscreen) window.location.href = withBase("/");
     else dialog.current?.close();
   }, [fullscreen]);
 
@@ -120,7 +121,7 @@ export default function TerminalWindow({ projects, fullscreen = false, openSigna
 
   const leaveTo = (href: string) => {
     if (!fullscreen) dialog.current?.close();
-    window.location.href = href;
+    window.location.href = withBase(href);
   };
 
   const perform = (action: Action) => {
@@ -136,7 +137,7 @@ export default function TerminalWindow({ projects, fullscreen = false, openSigna
         break;
       case "download": {
         const anchor = document.createElement("a");
-        anchor.href = action.href;
+        anchor.href = withBase(action.href);
         anchor.download = "";
         anchor.click();
         break;

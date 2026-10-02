@@ -3,6 +3,7 @@ import { X } from "lucide-react";
 import { copy } from "../../data/profile";
 import { markEggFound } from "../../lib/eggs";
 import { applyTheme, getThemePref } from "../../lib/theme";
+import { withBase } from "../../lib/url";
 
 interface Props {
   /** The site's own source repository, shown in the console greeting */
@@ -117,7 +118,7 @@ export default function EasterEggs({ sourceUrl }: Props) {
         <div className="toast flex items-center gap-3 !font-sans">
           <span>{copy.eggs.konami}</span>
           <a
-            href="/#contact"
+            href={withBase("/#contact")}
             className="btn btn-primary !min-h-0 !py-1"
             onClick={() => setSecretFound(false)}
           >
